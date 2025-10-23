@@ -1,0 +1,33 @@
+# Timezone HTTP Server
+
+This HTTP server serves time data in the same format as WorldTime.org.
+
+For example, the following URL:
+
+```
+http://[YOUR SERVER]:11080/timezone/Europe/Berlin
+```
+
+Will return JSON data like:
+
+```json
+{
+"utc_offset": "+02:00",
+"timezone": "Europe/Berlin",
+"day_of_week": 4,
+"day_of_year": 296,
+"datetime": "2025-10-23T02:26:24.423039+02:00",
+"utc_datetime": "2025-10-23T00:26:24.423039+00:00",
+"unixtime": 1761179184,
+"raw_offset": 3600,
+"week_number": 42,
+"dst": true,
+"abbreviation": "CEST",
+"dst_offset": 3600,
+"dst_from": "2025-03-30T01:00:00+00:00",
+"dst_until": "2025-10-26T01:00:00+00:00",
+"client_ip": "184.148.46.27"
+}
+```
+
+The port is currently hardcoded to `11080`, but in the future, it might be configurable via a configuration file.
