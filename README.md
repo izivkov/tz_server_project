@@ -1,14 +1,21 @@
 # Timezone HTTP Server
 
-This HTTP server serves time data in the same format as WorldTime.org.
+This HTTP server serves time data in the same format as **WorldTime.org**.
 
-For example, the following URL:
+Start the server like this:
+
+```
+python ./tz_server.py
+```
+
+Access the server via URL. For example, the following URL:
 
 ```
 http://[YOUR SERVER]:11080/timezone/Europe/Berlin
 ```
+Here `Europe/Berlin` is the timezone we like to query.
 
-Will return JSON data like:
+Will return time information for the timezone you requested in JSON format:
 
 ```json
 {
