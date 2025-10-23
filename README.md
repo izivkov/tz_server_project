@@ -26,7 +26,7 @@ Will return JSON data like:
 "dst_offset": 3600,
 "dst_from": "2025-03-30T01:00:00+00:00",
 "dst_until": "2025-10-26T01:00:00+00:00",
-"client_ip": "184.148.46.27"
+"client_ip": "134.123.45.67"
 }
 ```
 
