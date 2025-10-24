@@ -10,36 +10,116 @@ Start the server like this:
 python ./tz_server.py
 ```
 
-## Using the server
+text
+# Timezone API Endpoints Documentation
 
-Access the server via URL. For example, the following URL:
+This API provides timezone-related services based on Python's `pytz` library.
 
-```
-http://[YOUR SERVER]:11080/timezone/Europe/Berlin
-```
-Here `Europe/Berlin` is the timezone we like to query. The port is currently hardcoded to `11080`, but in the future, it might be configurable via a configuration file.
+---
 
-Will return time information for the timezone you requested in JSON format:
+## Endpoints
 
-```json
+### GET /timezone
+
+- **Description:** Returns a JSON list of all valid timezones supported by the server.
+- **Request:**
+
+GET /timezone
+
+text
+- **Response:**
+
+{
+"timezone": [
+"Africa/Abidjan",
+"Africa/Accra",
+"America/New_York",
+"Europe/London",
+...
+]
+}
+
+text
+- **Status Codes:**  
+- `200 OK` on success.
+
+---
+
+### GET /timezone/{timezone_name}
+
+- **Description:** Returns detailed current date, time, offset, and daylight saving information for the specified timezone.
+- **Request:**
+
+GET /timezone/{timezone_name}
+
+text
+- **Path Parameters:**
+- `timezone_name` (string): The full timezone name (supports hierarchical names like `Europe/London`).
+- **Response:**
+
 {
 "utc_offset": "+02:00",
 "timezone": "Europe/Berlin",
-"day_of_week": 4,
-"day_of_year": 296,
-"datetime": "2025-10-23T02:26:24.423039+02:00",
-"utc_datetime": "2025-10-23T00:26:24.423039+00:00",
-"unixtime": 1761179184,
-"raw_offset": 3600,
+"day_of_week": 5,
+"day_of_year": 297,
+"datetime": "2025-10-24T10:57:48.851324+02:00",
+"utc_datetime": "2025-10-24T08:57:48.851324+00:00",
+"unixtime": 1761292668,
+"raw_offset": 7200,
 "week_number": 42,
 "dst": true,
 "abbreviation": "CEST",
 "dst_offset": 3600,
 "dst_from": "2025-03-30T01:00:00+00:00",
 "dst_until": "2025-10-26T01:00:00+00:00",
-"client_ip": "134.123.45.67"
+"client_ip": "127.0.0.1"
 }
-```
+
+text
+- **Status Codes:**
+- `200 OK` on success.
+- `404 Not Found` if the timezone is not recognized.
+
+---
+
+### GET /validate/{timezone_name}
+
+- **Description:** Validates whether the specified timezone name is recognized by the server.
+- **Request:**
+
+GET /validate/{timezone_name}
+
+text
+- **Path Parameters:**
+- `timezone_name` (string): The timezone name to validate.
+- **Response:**
+- If valid:
+  ```
+  {
+    "isValid": "true"
+  }
+  ```
+- If invalid:
+  ```
+  {
+    "isValid": "false"
+  }
+  ```
+- **Status Codes:**
+- `200 OK` - validation status returned.
+
+---
+
+## Error Response
+
+- For unknown endpoints or methods:
+- Status Code: `404 Not Found`
+- Response Body:
+  ```
+  Unknown endpoint
+  ```
+
+---
 
 ## Create virtual environment
 

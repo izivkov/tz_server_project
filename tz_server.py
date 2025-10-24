@@ -15,6 +15,17 @@ class TimezoneRequestHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(self.path)
         path_parts = parsed_url.path.strip('/').split('/')
 
+        # Check for /validate/{timezone}
+        if len(path_parts) > 1 and path_parts[0].lower() == 'validate':
+            tz_name = '/'.join(path_parts[1:]).strip()  # Remove whitespace around the full timezone string
+            is_valid = tz_name in self.valid_timezones
+
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({"isValid": str(is_valid).lower()}).encode())
+            return
+
         # If path is /timezone (or /timezone/) return all valid timezones as JSON
         if len(path_parts) == 1 and path_parts[0].lower() == 'timezone':
             self.send_response(200)
