@@ -36,25 +36,29 @@ class TimezoneRequestHandler(BaseHTTPRequestHandler):
 
             # Find DST transitions for this year (approximate)
             year = now_tz.year
-            dst_transitions = tz._utc_transition_times
             dst_from = None
             dst_until = None
-            for i in range(len(dst_transitions) - 1):
-                trans = dst_transitions[i]
-                next_trans = dst_transitions[i + 1]
-                if trans.year == year:
-                    # Check if now_tz falls between transitions
-                    dt_now_utc = now_utc.replace(tzinfo=None)
-                    trans_utc = trans.replace(tzinfo=None)
-                    next_trans_utc = next_trans.replace(tzinfo=None)
-                    if trans_utc <= dt_now_utc < next_trans_utc:
-                        if is_dst:
-                            dst_from = trans.isoformat() + '+00:00'
-                            dst_until = next_trans.isoformat() + '+00:00'
-                        else:
-                            dst_from = next_trans.isoformat() + '+00:00'
-                            # Just guess next transition (may fail)
-                        break
+
+            if hasattr(tz, '_utc_transition_times') and tz._utc_transition_times:
+                dst_transitions = tz._utc_transition_times
+                for i in range(len(dst_transitions) - 1):
+                    trans = dst_transitions[i]
+                    next_trans = dst_transitions[i + 1]
+                    if trans.year == year:
+                        dt_now_utc = now_utc.replace(tzinfo=None)
+                        trans_utc = trans.replace(tzinfo=None)
+                        next_trans_utc = next_trans.replace(tzinfo=None)
+                        if trans_utc <= dt_now_utc < next_trans_utc:
+                            if is_dst:
+                                dst_from = trans.isoformat() + '+00:00'
+                                dst_until = next_trans.isoformat() + '+00:00'
+                            else:
+                                dst_from = next_trans.isoformat() + '+00:00'
+                            break
+            else:
+                # Handle timezones with no DST transitions
+                dst_from = None
+                dst_until = None
 
             # Format JSON response
             response = {
