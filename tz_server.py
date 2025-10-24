@@ -9,11 +9,23 @@ import pytz
 PORT = 11080
 
 class TimezoneRequestHandler(BaseHTTPRequestHandler):
+    valid_timezones = set(pytz.all_timezones)    
 
     def do_GET(self):
         parsed_url = urlparse(self.path)
-        
         path_parts = parsed_url.path.strip('/').split('/')
+
+        # If path is /timezones (or /timezones/) return all valid timezones as JSON
+        if len(path_parts) == 1 and path_parts[0].lower() == 'timezones':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            # Return the sorted list of all valid_timezones
+            timezones_list = sorted(self.valid_timezones)
+            self.wfile.write(json.dumps({"timezones": timezones_list}).encode())
+            return
+
+        # Else if path starts with /timezone/{tz_name}
         if path_parts and path_parts[0].lower() == 'timezone' and len(path_parts) > 1:
             tz_name = '/'.join(path_parts[1:])  # join all remaining parts for timezone
 
@@ -56,7 +68,6 @@ class TimezoneRequestHandler(BaseHTTPRequestHandler):
                                 dst_from = next_trans.isoformat() + '+00:00'
                             break
             else:
-                # Handle timezones with no DST transitions
                 dst_from = None
                 dst_until = None
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import requests
-from timezone_api.timezone_utils import load_timezones
+import pytz
 
 def fetch_timezone_info(base_url, timezone):
     """
@@ -18,7 +18,7 @@ def fetch_timezone_info(base_url, timezone):
     
 def run():
     base_url = "http://localhost:11080"  
-    timezones = load_timezones('static/timezones.json')
+    timezones = set(pytz.all_timezones) 
 
     for tz in timezones:
         info = fetch_timezone_info(base_url, tz)
