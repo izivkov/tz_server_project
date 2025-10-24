@@ -31,9 +31,9 @@ class TimezoneRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            # Return the sorted list of all valid_timezones
+            # Return the sorted list of all valid_timezones directly as JSON array
             timezones_list = sorted(self.valid_timezones)
-            self.wfile.write(json.dumps({"timezone": timezones_list}).encode())
+            self.wfile.write(json.dumps(timezones_list).encode())
             return
 
         # Else if path starts with /timezone/{tz_name}
