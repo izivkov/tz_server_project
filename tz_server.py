@@ -15,14 +15,14 @@ class TimezoneRequestHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(self.path)
         path_parts = parsed_url.path.strip('/').split('/')
 
-        # If path is /timezones (or /timezones/) return all valid timezones as JSON
-        if len(path_parts) == 1 and path_parts[0].lower() == 'timezones':
+        # If path is /timezone (or /timezone/) return all valid timezones as JSON
+        if len(path_parts) == 1 and path_parts[0].lower() == 'timezone':
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             # Return the sorted list of all valid_timezones
             timezones_list = sorted(self.valid_timezones)
-            self.wfile.write(json.dumps({"timezones": timezones_list}).encode())
+            self.wfile.write(json.dumps({"timezone": timezones_list}).encode())
             return
 
         # Else if path starts with /timezone/{tz_name}
