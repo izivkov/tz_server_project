@@ -12,7 +12,7 @@ python ./tz_server.py
 
 ## Endpoints
 
-### Get Specific Endpoint
+### Get Specific Timezone
 ```
 http://[YOUR SERVER]:11080/timezone/Europe/Berlin
 ```
