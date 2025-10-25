@@ -45,7 +45,7 @@ Will return time information for the timezone you requested in JSON format:
 http://[YOUR SERVER]:11080/timezone
 
 This will return a sorted list of all endpints in a JSON format
-```
+```json
 ["Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa",  ... ]
 ```
 
